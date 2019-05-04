@@ -1,0 +1,26 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="sysdate" dbms="oracle"/>
+
+    <changeSet id="201904121532001" author="yuan.liu">
+        <createTable tableName="SYS_USER">
+            <column name="ID" type="bigint" remarks="用户Id">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_USER"/>
+            </column>
+            <column name="NAME" type="varchar(100)" remarks="用户昵称"/>
+            <column name="LOGIN_NO" type="varchar(100)" remarks="登陆账号"/>
+            <column name="PASSWORD" type="varchar(100)" remarks="用户密码"/>
+            <column name="PHONE" type="varchar(100)" remarks="手机号码"/>
+            <column name="EMAIL" type="varchar(100)" remarks="邮箱"/>
+            <column name="RANK" type="boolean" remarks="管理权限"/>
+            <column name="TEAM_ID" type="bigint" remarks="团队Id"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+
+
+</databaseChangeLog>
