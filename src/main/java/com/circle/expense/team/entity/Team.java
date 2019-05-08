@@ -1,4 +1,4 @@
-package com.circle.expense.user.entity;
+package com.circle.expense.team.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.circle.core.entity.BaseEntity;
@@ -17,57 +17,35 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author yuan.liu
- * @since 2019-04-12
+ * @since 2019-05-06
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("SYS_USER")
-public class User extends BaseEntity {
+@TableName("SYS_TEAM")
+public class Team extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户昵称
+     * 团队名称
      */
     @TableField("NAME")
     private String name;
 
     /**
-     * 登陆账号
+     * 团队详情
      */
-    @TableField("LOGIN_NO")
-    private String loginNo;
+    @TableField("DESCRIPTION")
+    private String description;
 
     /**
-     * 用户密码
-     */
-    @TableField("PASSWORD")
-    private String password;
-
-    /**
-     * 手机号码
-     */
-    @TableField("PHONE")
-    private String phone;
-
-    /**
-     * 邮箱
-     */
-    @TableField("EMAIL")
-    private String email;
-
-    /**
-     * 管理权限
-     */
-    @TableField("RANK")
-    private Integer rank;
-
-    /**
-     * 团队Id
+     * 创建人ID
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableField("TEAM_ID")
-    private Long teamId;
+    @TableField("BELONG")
+    private Long belong;
+
+
 
 }

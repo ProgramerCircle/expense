@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.circle.expense.expenseApplication.mapper.ExpenseApplicationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.circle.expense.expenseApplication.entity.ExpenseApplication">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="EXPENSE_NO" property="expenseNo" />
+        <result column="DESCRIPTION" property="description" />
+        <result column="AMOUNT" property="amount" />
+        <result column="STATUS" property="status" />
+        <result column="EXPENSE_TYPE_ID" property="expenseTypeId" />
+        <result column="PROJECT_ID" property="projectId" />
+        <result column="TEAM_ID" property="teamId" />
+        <result column="APPLICATION_USER" property="applicationUser" />
+        <result column="DELETED" property="deleted" />
+        <result column="CREATED_DATE" property="createdDate" />
+    </resultMap>
+
+
+    <select id="getExpenseNo" resultType="java.lang.Integer" useCache="false" flushCache="true" >
+       select SEQ_EXPENSE_NO.NEXTVAL FROM DUAL
+     </select>
+
+
+</mapper>

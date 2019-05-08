@@ -1,4 +1,4 @@
-package com.circle.expense.user.entity;
+package com.circle.expense.expenseType.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.circle.core.entity.BaseEntity;
@@ -17,57 +17,53 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author yuan.liu
- * @since 2019-04-12
+ * @since 2019-05-07
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("SYS_USER")
-public class User extends BaseEntity {
+@TableName("SYS_EXPENSE_TYPE")
+public class ExpenseType extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户昵称
+     * 费用类型名称
      */
     @TableField("NAME")
     private String name;
 
     /**
-     * 登陆账号
+     * 费用类型名称缩写
      */
-    @TableField("LOGIN_NO")
-    private String loginNo;
+    @TableField("SHORT_NAME")
+    private String shortName;
 
     /**
-     * 用户密码
+     * 金额上限
      */
-    @TableField("PASSWORD")
-    private String password;
+    @TableField("MAX_AMOUNT")
+    private Double maxAmount;
 
     /**
-     * 手机号码
+     * 审批标识0为管理员审批1为指定人审批
      */
-    @TableField("PHONE")
-    private String phone;
+    @TableField("APPROVE_STATUS")
+    private Boolean approveStatus;
 
     /**
-     * 邮箱
-     */
-    @TableField("EMAIL")
-    private String email;
-
-    /**
-     * 管理权限
-     */
-    @TableField("RANK")
-    private Integer rank;
-
-    /**
-     * 团队Id
+     * 审批人ID
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableField("TEAM_ID")
-    private Long teamId;
+    @TableField("APPROVE_USER")
+    private Long approveUser;
+
+    /**
+     * 项目ID
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @TableField("PROJECT_ID")
+    private Long projectId;
+
 
 }

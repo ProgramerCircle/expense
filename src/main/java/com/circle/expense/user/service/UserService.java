@@ -6,6 +6,8 @@ import com.circle.expense.user.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -24,5 +26,13 @@ public interface UserService extends IService<User> {
     public User editUser(User user);
 
     public LoginUserDTO login(String login, String password);
+
+    public List<User> listByTeamId(Long id);
+
+    public LoginUserDTO joinTeam(Long userId,Long teamId);
+
+    public void setManager(Long userId);
+
+    public void cancelManager(Long userId);
 
 }

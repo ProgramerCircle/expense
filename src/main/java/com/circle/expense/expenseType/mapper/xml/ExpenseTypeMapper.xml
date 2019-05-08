@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.circle.expense.expenseType.mapper.ExpenseTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.circle.expense.expenseType.entity.ExpenseType">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="SHORT_NAME" property="shortName" />
+        <result column="MAX_AMOUNT" property="maxAmount" />
+        <result column="APPROVE_STATUS" property="approveStatus" />
+        <result column="APPROVE_USER" property="approveUser" />
+        <result column="PROJECT_ID" property="projectId" />
+        <result column="DELETED" property="deleted" />
+        <result column="CREATED_DATE" property="createdDate" />
+    </resultMap>
+
+</mapper>

@@ -21,6 +21,104 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="201904121532002" author="yuan.liu">
+        <createTable tableName="SYS_TEAM">
+            <column name="ID" type="bigint" remarks="团队ID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_TEAM"/>
+            </column>
+            <column name="NAME" type="varchar(100)" remarks="团队名称"/>
+            <column name="DESCRIPTION" type="varchar(500)" remarks="团队详情"/>
+            <column name="BELONG" type="bigint" remarks="创建人ID"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201904121532003" author="yuan.liu">
+        <createTable tableName="SYS_PROJECT">
+            <column name="ID" type="bigint" remarks="项目ID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_PROJECT"/>
+            </column>
+            <column name="NAME" type="varchar(100)" remarks="项目名称"/>
+            <column name="DESCRIPTION" type="varchar(500)" remarks="项目详情"/>
+            <column name="TEAM_ID" type="bigint" remarks="团队ID"/>
+            <column name="AMOUNT" type="decimal(20,2)" defaultValue="0" remarks="金额"/>
+            <column name="BUDGET_AMOUNT" type="decimal(20,2)" defaultValue="100" remarks="预算额"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201904121532004" author="yuan.liu">
+        <createTable tableName="SYS_EXPENSE_TYPE">
+            <column name="ID" type="bigint" remarks="费用类型ID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_EXPENSE_TYPE"/>
+            </column>
+            <column name="NAME" type="varchar(100)" remarks="费用类型名称"/>
+            <column name="SHORT_NAME" type="varchar(100)" remarks="费用类型名称缩写"/>
+            <column name="MAX_AMOUNT" type="decimal(20,2)" defaultValue="0" remarks="金额上限"/>
+            <column name="APPROVE_STATUS" type="boolean" defaultValue="0" remarks="审批标识0为管理员审批1为指定人审批"/>
+            <column name="APPROVE_USER" type="bigint" remarks="审批人ID"/>
+            <column name="PROJECT_ID" type="bigint" remarks="项目ID"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201904121532005" author="yuan.liu">
+        <addColumn tableName="SYS_PROJECT">
+            <column name="SHORT_NAME" type="varchar(100)" remarks="项目名称简写"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201904121532006" author="yuan.liu">
+        <createTable tableName="SYS_EXPENSE_APPLICATION">
+            <column name="ID" type="bigint" remarks="费用申请单ID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_EXPENSE_APPLICATION"/>
+            </column>
+            <column name="NAME" type="varchar(100)" remarks="费用申请单名称，根据项目名，费用类型名生成"/>
+            <column name="EXPENSE_NO" type="varchar(100)" remarks="费用申请单号，根据项目代码，费用类型代码，日期，序号自动生成"/>
+            <column name="DESCRIPTION" type="varchar(500)" remarks="单据描述"/>
+            <column name="AMOUNT" type="decimal(20,2)" defaultValue="0" remarks="金额"/>
+            <column name="STATUS" type="bigint" defaultValue="1" remarks="状态,1编辑中,2审批中,3通过,4驳回"/>
+            <column name="EXPENSE_TYPE_ID" type="bigint" remarks="费用类型ID"/>
+            <column name="PROJECT_ID" type="bigint" remarks="项目ID"/>
+            <column name="TEAM_ID" type="bigint" remarks="团队ID"/>
+            <column name="APPLICATION_USER" type="bigint" remarks="申请人ID"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201904121532007" author="yuan.liu">
+        <createSequence sequenceName="SEQ_EXPENSE_NO" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="201904121532008" author="yuan.liu">
+        <createTable tableName="SYS_EXPENSE_APPROVE">
+            <column name="ID" type="bigint" remarks="费用审批表">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_EXPENSE_APPROVE"/>
+            </column>
+            <column name="EXPENSE_APPLICATION_ID" type="bigint" remarks="费用申请单ID"/>
+            <column name="APPROVE_USER" type="bigint" remarks="审批人"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201904121532009" author="yuan.liu">
+        <createTable tableName="SYS_TEAM_MANAGER">
+            <column name="ID" type="bigint" remarks="团队管理员表">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_TEAM_MANAGER"/>
+            </column>
+            <column name="USER_ID" type="bigint" remarks="用户ID"/>
+            <column name="TEAM_ID" type="bigint" remarks="团队ID"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+
 
 
 </databaseChangeLog>

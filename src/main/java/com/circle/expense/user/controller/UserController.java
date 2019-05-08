@@ -5,8 +5,11 @@ import com.circle.expense.user.dto.LoginUserDTO;
 import com.circle.expense.user.entity.User;
 import com.circle.expense.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -47,4 +50,25 @@ public class UserController {
         return ResponseEntity.ok(userService.login(login,password));
     }
 
+    @GetMapping("/list/by/team")
+    public ResponseEntity<List<User>> listByTeam(Long id){
+        return ResponseEntity.ok(userService.listByTeamId(id));
+    }
+
+    @PostMapping("/team/join")
+    public ResponseEntity<LoginUserDTO> joinTeam(Long userId,Long teamId){
+        return ResponseEntity.ok(userService.joinTeam(userId,teamId));
+    }
+
+    @PostMapping("/team/cancel/manager")
+    public ResponseEntity cancelManager(Long userId){
+        userService.cancelManager(userId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/team/set/manager")
+    public ResponseEntity setManager(Long userId){
+        userService.setManager(userId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

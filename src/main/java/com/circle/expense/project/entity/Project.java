@@ -1,4 +1,4 @@
-package com.circle.expense.user.entity;
+package com.circle.expense.project.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.circle.core.entity.BaseEntity;
@@ -17,57 +17,53 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author yuan.liu
- * @since 2019-04-12
+ * @since 2019-05-06
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("SYS_USER")
-public class User extends BaseEntity {
+@TableName("SYS_PROJECT")
+public class Project extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户昵称
+     * 项目名称
      */
     @TableField("NAME")
     private String name;
 
     /**
-     * 登陆账号
+     * 项目名称
      */
-    @TableField("LOGIN_NO")
-    private String loginNo;
+    @TableField("SHORT_NAME")
+    private String shortName;
+
 
     /**
-     * 用户密码
+     * 项目详情
      */
-    @TableField("PASSWORD")
-    private String password;
+    @TableField("DESCRIPTION")
+    private String description;
 
     /**
-     * 手机号码
+     * 团队ID
      */
-    @TableField("PHONE")
-    private String phone;
-
-    /**
-     * 邮箱
-     */
-    @TableField("EMAIL")
-    private String email;
-
-    /**
-     * 管理权限
-     */
-    @TableField("RANK")
-    private Integer rank;
-
-    /**
-     * 团队Id
-     */
-    @JsonSerialize(using = ToStringSerializer.class)
     @TableField("TEAM_ID")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
+
+    /**
+     * 金额
+     */
+    @TableField("AMOUNT")
+    private Double amount;
+
+    /**
+     * 预算额
+     */
+    @TableField("BUDGET_AMOUNT")
+    private Double budgetAmount;
+
 
 }
