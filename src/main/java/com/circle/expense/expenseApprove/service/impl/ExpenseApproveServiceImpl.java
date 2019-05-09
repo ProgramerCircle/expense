@@ -84,11 +84,13 @@ public class ExpenseApproveServiceImpl extends ServiceImpl<ExpenseApproveMapper,
         }else {
             List<Long> managerIds = teamManagerService.selectList(new QueryWrapper<TeamManager>().eq("TEAM_ID", expenseApplication.getTeamId())).stream().map(TeamManager::getUserId).collect(Collectors.toList());
             managerIds.stream().forEach(item -> {
-                ExpenseApprove expenseApprove = new ExpenseApprove();
-                expenseApprove.setId(IdWorker.getId());
-                expenseApprove.setApproveUser(item);
-                expenseApprove.setExpenseApplicationId(expenseApplicationId);
-                baseMapper.insert(expenseApprove);
+                if(!item.equals(expenseApplication.getApplicationUser())){
+                    ExpenseApprove expenseApprove = new ExpenseApprove();
+                    expenseApprove.setId(IdWorker.getId());
+                    expenseApprove.setApproveUser(item);
+                    expenseApprove.setExpenseApplicationId(expenseApplicationId);
+                    baseMapper.insert(expenseApprove);
+                }
             });
         }
         expenseApplication.setStatus(2L);

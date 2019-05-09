@@ -19,6 +19,7 @@ import java.util.List;
  * @since 2019-05-07
  */
 @RestController
+@CrossOrigin(origins = "*" ,allowCredentials="true")
 @RequestMapping("/expenseType")
 public class ExpenseTypeController {
 

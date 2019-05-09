@@ -52,7 +52,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, Team> implements Te
         baseMapper.insert(team);
         User user = userMapper.selectById(team.getBelong());
         user.setTeamId(team.getId());
+        user.setRank(1);
         userMapper.updateById(user);
+        teamManagerService.delete(new QueryWrapper<TeamManager>().eq("USER_ID", user.getId()));
         //将创建用户添加至团队管理员中
         TeamManager teamManager = new TeamManager();
         teamManager.setId(IdWorker.getId());

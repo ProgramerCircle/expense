@@ -19,6 +19,7 @@ import java.util.List;
  * @since 2019-05-06
  */
 @RestController
+@CrossOrigin(origins = "*" ,allowCredentials="true")
 @RequestMapping("/team")
 public class TeamController {
 

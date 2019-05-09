@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2019-04-12
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:8000" ,allowCredentials="true")
+@CrossOrigin(origins = "*" ,allowCredentials="true")
 @RequestMapping("/user")
 public class UserController {
 
