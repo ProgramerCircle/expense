@@ -24,4 +24,6 @@ public interface ExpenseTypeService extends IService<ExpenseType> {
 
     public List<ExpenseTypeDTO> listDTOByProjectId(Long id);
 
+    public List<ExpenseTypeDTO> listAnalyzeExpenseTypeDTO(Long id);
+
 }

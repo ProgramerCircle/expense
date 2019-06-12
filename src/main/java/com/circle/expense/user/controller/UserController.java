@@ -55,6 +55,11 @@ public class UserController {
         return ResponseEntity.ok(userService.listByTeamId(id));
     }
 
+    @GetMapping("/list/by/team/and/rank")
+    public ResponseEntity<List<User>> listByTeam(Long id,Long rank){
+        return ResponseEntity.ok(userService.listByTeamIdAndRank(id,rank));
+    }
+
     @PostMapping("/team/join")
     public ResponseEntity<LoginUserDTO> joinTeam(Long userId,Long teamId){
         return ResponseEntity.ok(userService.joinTeam(userId,teamId));

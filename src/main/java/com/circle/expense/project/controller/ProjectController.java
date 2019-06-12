@@ -1,6 +1,7 @@
 package com.circle.expense.project.controller;
 
 
+import com.circle.expense.project.dto.ProjectAnalyzeDTO;
 import com.circle.expense.project.entity.Project;
 import com.circle.expense.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class ProjectController {
     @GetMapping("/list/by/team")
     public ResponseEntity<List<Project>> listProjectByTeamId(Long id){
         return ResponseEntity.ok(projectService.listProject(id));
+    }
+
+    @GetMapping("/analyze")
+    public ResponseEntity<ProjectAnalyzeDTO> getProjectAnalyzeDTO(Long id){
+        return ResponseEntity.ok(projectService.getProjectAnalyzeDTO(id));
     }
 
 

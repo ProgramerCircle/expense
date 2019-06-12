@@ -1,6 +1,7 @@
 package com.circle.expense.expenseApprove.controller;
 
 
+import com.circle.expense.expenseApplication.dto.ExpenseApplicationDTO;
 import com.circle.expense.expenseApplication.entity.ExpenseApplication;
 import com.circle.expense.expenseApprove.service.ExpenseApproveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class ExpenseApproveController {
     private ExpenseApproveService expenseApproveService;
 
     @GetMapping("/list/by/condition")
-    public ResponseEntity<List<ExpenseApplication>> listMyApprovalExpenseApplication(@RequestParam(value = "userId",required = true) Long userId, Long applicationUser, Long projectId, Long expenseTypeId, Long status, String expenseNo){
-        return ResponseEntity.ok(expenseApproveService.listMyApprovalExpenseApplication(userId,applicationUser,projectId,expenseTypeId,status,expenseNo));
+    public ResponseEntity<List<ExpenseApplicationDTO>> listMyApprovalExpenseApplication(Long approveUser, Long applicationUser, Long projectId, Long expenseTypeId, Long status, String expenseNo){
+        return ResponseEntity.ok(expenseApproveService.listMyApprovalExpenseApplication(approveUser,applicationUser,projectId,expenseTypeId,status,expenseNo));
     }
 
     @PostMapping("/submit")
@@ -38,14 +39,14 @@ public class ExpenseApproveController {
     }
 
     @PostMapping("/pass")
-    public ResponseEntity passExpenseApplication(Long expenseApplicationId){
-        expenseApproveService.passExpenseApplication(expenseApplicationId);
+    public ResponseEntity passExpenseApplication(Long expenseApplicationId,Long approveUser){
+        expenseApproveService.passExpenseApplication(expenseApplicationId,approveUser);
         return new ResponseEntity(HttpStatus.OK);
     };
 
     @PostMapping("/refuse")
-    public ResponseEntity refuseExpenseApplication(Long expenseApplicationId){
-        expenseApproveService.refuseExpenseApplication(expenseApplicationId);
+    public ResponseEntity refuseExpenseApplication(Long expenseApplicationId,Long approveUser){
+        expenseApproveService.refuseExpenseApplication(expenseApplicationId,approveUser);
         return new ResponseEntity(HttpStatus.OK);
     };
 

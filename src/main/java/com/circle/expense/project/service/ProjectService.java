@@ -1,5 +1,6 @@
 package com.circle.expense.project.service;
 
+import com.circle.expense.project.dto.ProjectAnalyzeDTO;
 import com.circle.expense.project.entity.Project;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -18,5 +19,7 @@ public interface ProjectService extends IService<Project> {
     public Project createProject(Project project);
 
     public List<Project> listProject(Long id);
+
+    public ProjectAnalyzeDTO getProjectAnalyzeDTO(Long projectId);
 
 }

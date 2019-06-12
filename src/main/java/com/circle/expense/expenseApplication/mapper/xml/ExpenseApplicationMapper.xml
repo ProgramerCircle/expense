@@ -14,8 +14,34 @@
         <result column="PROJECT_ID" property="projectId" />
         <result column="TEAM_ID" property="teamId" />
         <result column="APPLICATION_USER" property="applicationUser" />
+        <result column="APPROVE_USER" property="approveUser" />
+        <result column="APPROVE_DATE" property="approveDate" />
+        <result column="EVIDENCE_ID" property="evidenceId" />
         <result column="DELETED" property="deleted" />
         <result column="CREATED_DATE" property="createdDate" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="dtoResultMap" type="com.circle.expense.expenseApplication.dto.ExpenseApplicationDTO">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="EXPENSE_NO" property="expenseNo" />
+        <result column="DESCRIPTION" property="description" />
+        <result column="AMOUNT" property="amount" />
+        <result column="STATUS" property="status" />
+        <result column="EXPENSE_TYPE_ID" property="expenseTypeId" />
+        <result column="PROJECT_ID" property="projectId" />
+        <result column="TEAM_ID" property="teamId" />
+        <result column="APPLICATION_USER" property="applicationUser" />
+        <result column="APPROVE_USER" property="approveUser" />
+        <result column="APPROVE_DATE" property="approveDate" />
+        <result column="EVIDENCE_ID" property="evidenceId" />
+        <result column="DELETED" property="deleted" />
+        <result column="CREATED_DATE" property="createdDate" />
+        <result column="EXPENSE_TYPE_NAME" property="expenseTypeName" />
+        <result column="PROJECT_NAME" property="projectName" />
+        <result column="APPLICATION_USER_NAME" property="applicationUserName" />
+        <result column="APPROVE_USER_NAME" property="approveUserName" />
     </resultMap>
 
 
@@ -23,5 +49,95 @@
        select SEQ_EXPENSE_NO.NEXTVAL FROM DUAL
      </select>
 
+    <select id="listDTOByCondition" resultMap="dtoResultMap">
+       select EA.*,
+        (select U1.name from SYS_USER U1 WHERE U1.ID = EA.APPROVE_USER) APPROVE_USER_NAME,
+        (select U2.name from SYS_USER U2 WHERE U2.ID = EA.APPLICATION_USER) APPLICATION_USER_NAME,
+        (select ET.name from SYS_EXPENSE_TYPE ET WHERE ET.ID = EA.EXPENSE_TYPE_ID) EXPENSE_TYPE_NAME,
+        (select P.name from SYS_PROJECT P WHERE P.ID = EA.PROJECT_ID) PROJECT_NAME
+       from SYS_EXPENSE_APPLICATION EA
+       where 1=1
+       <if test="approveUser != null">
+           and EA.APPROVE_USER = #{approveUser}
+       </if>
+        <if test="applicationUser != null">
+            and EA.APPLICATION_USER = #{applicationUser}
+        </if>
+        <if test="expenseTypeId != null">
+            and EA.EXPENSE_TYPE_ID = #{expenseTypeId}
+        </if>
+        <if test="projectId != null">
+            and EA.PROJECT_ID = #{projectId}
+        </if>
+        <if test="status != null">
+            and EA.STATUS = #{status}
+        </if>
+        <if test="approveRecordSearchFlag == true">
+            and EA.STATUS > 1
+        </if>
+        <if test="expenseNo != null">
+            and EA.EXPENSE_NO LIKE contact('%',contact(#{expenseNo,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="startDate != null">
+            and EA.APPROVE_DATE $gt; #{startDate,jdbcType=TIMESTAMP }
+        </if>
+        <if test="endDate != null">
+            and EA.APPROVE_DATE $lt #{endDate,jdbcType=TIMESTAMP }
+        </if>
+        <if test="ids != null">
+            and EA.ID in
+            <foreach item="item" index="index" collection="ids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+     </select>
+
+    <select id="pageDTOByCondition" resultMap="dtoResultMap">
+        select EA.*,
+        (select U1.name from SYS_USER U1 WHERE U1.ID = EA.APPROVE_USER) APPROVE_USER_NAME,
+        (select U2.name from SYS_USER U2 WHERE U2.ID = EA.APPLICATION_USER) APPLICATION_USER_NAME,
+        (select ET.name from SYS_EXPENSE_TYPE ET WHERE ET.ID = EA.EXPENSE_TYPE_ID) EXPENSE_TYPE_NAME,
+        (select P.name from SYS_PROJECT P WHERE P.ID = EA.PROJECT_ID) PROJECT_NAME
+        from SYS_EXPENSE_APPLICATION EA
+        where 1=1
+        <if test="approveUser != null">
+            and EA.APPROVE_USER = #{approveUser}
+        </if>
+        <if test="applicationUser != null">
+            and EA.APPLICATION_USER = #{applicationUser}
+        </if>
+        <if test="expenseTypeId != null">
+            and EA.EXPENSE_TYPE_ID = #{expenseTypeId}
+        </if>
+        <if test="projectId != null">
+            and EA.PROJECT_ID = #{projectId}
+        </if>
+        <if test="status != null">
+            and EA.STATUS = #{status}
+        </if>
+        <if test="approveRecordSearchFlag == true">
+            and EA.STATUS > 1
+        </if>
+        <if test="expenseNo != null">
+            and EA.EXPENSE_NO LIKE contact('%',contact(#{expenseNo,jdbcType=VARCHAR},'%'))
+        </if>
+        <if test="startDate != null">
+            and EA.APPROVE_DATE $gt; #{startDate,jdbcType=TIMESTAMP }
+        </if>
+        <if test="endDate != null">
+            and EA.APPROVE_DATE $lt #{endDate,jdbcType=TIMESTAMP }
+        </if>
+        <if test="ids != null">
+            and EA.ID in
+            <foreach item="item" index="index" collection="ids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+    <!--SYS_USER U1,SYS_USER U2,SYS_PROJECT P,SYS_EXPENSE_TYPE ET,-->
 
 </mapper>

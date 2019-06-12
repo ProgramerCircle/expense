@@ -118,6 +118,28 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="201904121532010" author="yuan.liu">
+        <addColumn tableName="SYS_EXPENSE_APPLICATION">
+            <column name="EVIDENCE_ID" type="bigint" remarks="凭证id"/>
+            <column name="APPROVE_ID" type="bigint" remarks="审批人id"/>
+            <column name="APPROVE_DATE" type="timestamp" remarks="审批日期"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="201904121532011" author="yuan.liu">
+        <createTable tableName="SYS_EVIDENCE" remarks="凭证表">
+            <column name="ID" type="bigint" remarks="团队管理员表">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SYS_EVIDENCE"/>
+            </column>
+            <column name="PATH" type="varchar(200)" remarks="凭证存放路径"/>
+            <column name="DELETED" type="boolean" defaultValue="0" remarks="删除标志"/>
+            <column name="CREATED_DATE" type="timestamp" defaultValue="${now}" remarks="创建日期"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="201904121532012" author="yuan.liu">
+        <renameColumn tableName="SYS_EXPENSE_APPLICATION" oldColumnName="APPROVE_ID" newColumnName="APPROVE_USER"/>
+    </changeSet>
 
 
 

@@ -15,4 +15,36 @@
         <result column="CREATED_DATE" property="createdDate" />
     </resultMap>
 
+    <!-- 通用查询映射结果 -->
+    <resultMap id="dtoResultMap" type="com.circle.expense.expenseType.dto.ExpenseTypeDTO">
+        <id column="ID" property="id" />
+        <result column="NAME" property="name" />
+        <result column="SHORT_NAME" property="shortName" />
+        <result column="MAX_AMOUNT" property="maxAmount" />
+        <result column="APPROVE_STATUS" property="approveStatus" />
+        <result column="APPROVE_USER_NAME" property="approveUserName" />
+        <result column="APPROVE_USER" property="approveUser" />
+        <result column="AMOUNT" property="amount" />
+        <result column="COU" property="count" />
+        <result column="PROJECT_ID" property="projectId" />
+        <result column="DELETED" property="deleted" />
+        <result column="CREATED_DATE" property="createdDate" />
+    </resultMap>
+
+    <select id="listAnalyzeExpenseTypeDTO" resultMap="dtoResultMap">
+        SELECT ET.*,
+        (select U.NAME FROM SYS_USER U WHERE U.ID = ET.APPROVE_USER) APPROVE_USER_NAME,
+        T.AMOUNT,T.COU
+        FROM SYS_EXPENSE_TYPE ET,(
+          select EA.EXPENSE_TYPE_ID ID,sum(EA.AMOUNT) AMOUNT,count(EA.ID) COU
+            from SYS_EXPENSE_APPLICATION EA
+            where 1=1
+            and EA.PROJECT_ID = #{projectId}
+            and EA.STATUS = 3
+            group by EA.EXPENSE_TYPE_ID) T
+        WHERE ET.ID = T.ID
+
+
+    </select>
+
 </mapper>

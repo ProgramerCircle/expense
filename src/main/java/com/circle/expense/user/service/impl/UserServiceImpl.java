@@ -1,11 +1,14 @@
 package com.circle.expense.user.service.impl;
 
+import ch.qos.logback.core.util.TimeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.circle.core.exception.BizException;
 import com.circle.core.util.RandomUtils;
 import com.circle.core.util.StringUtils;
 import com.circle.core.util.VerifyCodeUtils;
+import com.circle.expense.expenseApprove.entity.ExpenseApprove;
+import com.circle.expense.expenseApprove.service.ExpenseApproveService;
 import com.circle.expense.team.entity.Team;
 import com.circle.expense.team.entity.TeamManager;
 import com.circle.expense.team.service.TeamManagerService;
@@ -15,6 +18,7 @@ import com.circle.expense.user.entity.User;
 import com.circle.expense.user.mapper.UserMapper;
 import com.circle.expense.user.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import freemarker.template.utility.DateUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,9 +27,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -45,7 +53,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private TeamManagerService teamManagerService;
 
     @Autowired
+    private ExpenseApproveService expenseApproveService;
+
+    @Autowired
     private TeamService teamService;
+
+    @Value("${expense.user.useVerifyCodeFlag}")
+    private Integer useVerifyCodeFlag;
 
     public void verifyUserExists(User user){
         Integer num = null;
@@ -71,9 +85,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         this.verifyUserExists(user);
         String verifyCode = String.valueOf(RandomUtils.getNextInt(100000,999999));
         redisTemplate.opsForValue().set("verifyCode",verifyCode);
-        //TODO 发送验证码
-
-        VerifyCodeUtils.sendVerifyCode(user.getPhone(),String.valueOf(verifyCode));
+        if(useVerifyCodeFlag > 0){
+            VerifyCodeUtils.sendVerifyCode(user.getPhone(),String.valueOf(verifyCode));
+        }
         return verifyCode;
     }
 
@@ -147,10 +161,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    public List<User> listByTeamIdAndRank(Long id,Long rank) {
+        return baseMapper.selectList(new QueryWrapper<User>().eq("TEAM_ID",id).eq("RANK",rank));
+    }
+
+    @Override
     public LoginUserDTO joinTeam(Long userId, Long teamId) {
         User user = baseMapper.selectById(userId);
+        if(user.getTeamId() != null){
+            throw new BizException("已有团队，无法再次加入！");
+        }
         user.setTeamId(teamId);
-        user.setRank(0);
         baseMapper.updateById(user);
         LoginUserDTO loginUserDTO = new LoginUserDTO(user);
         loginUserDTO.setStatus("ok");
@@ -169,11 +190,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional
     public void cancelManager(Long userId) {
         User user = baseMapper.selectById(userId);
         Team team = teamService.selectById(user.getTeamId());
         if(team.getBelong().equals(userId)){
-            throw new BizException("无法取消创建者的管理员权限");
+            throw new BizException("无法取管理员的权限");
         }
         user.setRank(0);
         baseMapper.updateById(user);

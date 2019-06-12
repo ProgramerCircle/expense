@@ -10,5 +10,9 @@ public class ExpenseTypeDTO extends ExpenseType {
 
     private String approveStatusName;
 
+    private Double amount;
+
+    private Integer count;
+
 
 }

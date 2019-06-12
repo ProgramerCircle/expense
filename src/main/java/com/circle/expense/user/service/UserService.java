@@ -29,6 +29,8 @@ public interface UserService extends IService<User> {
 
     public List<User> listByTeamId(Long id);
 
+    public List<User> listByTeamIdAndRank(Long id,Long rank);
+
     public LoginUserDTO joinTeam(Long userId,Long teamId);
 
     public void setManager(Long userId);

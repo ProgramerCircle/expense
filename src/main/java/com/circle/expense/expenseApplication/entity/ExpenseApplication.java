@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.circle.core.entity.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -84,6 +86,28 @@ public class ExpenseApplication extends BaseEntity {
     @JsonSerialize(using = ToStringSerializer.class)
     @TableField("APPLICATION_USER")
     private Long applicationUser;
+
+    /**
+     * 审批人ID
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @TableField("APPROVE_USER")
+    private Long approveUser;
+
+    /**
+     * 凭证ID
+     */
+    @JsonSerialize(using = ToStringSerializer.class)
+    @TableField("EVIDENCE_ID")
+    private Long evidenceId;
+
+    /**
+     * 审批日期
+     */
+    @TableField("APPROVE_DATE")
+    private ZonedDateTime approveDate;
+
+
 
 
 }

@@ -85,4 +85,17 @@ public class ExpenseTypeServiceImpl extends ServiceImpl<ExpenseTypeMapper, Expen
         });
         return expenseTypeDTOS;
     }
+
+    @Override
+    public List<ExpenseTypeDTO> listAnalyzeExpenseTypeDTO(Long id) {
+        List<ExpenseTypeDTO> expenseTypeDTOS = baseMapper.listAnalyzeExpenseTypeDTO(id);
+        expenseTypeDTOS.stream().forEach(item -> {
+            if(item.getApproveStatus()) {
+                item.setApproveStatusName("指定人审批");
+            }else{
+                item.setApproveStatusName("管理员审批");
+            }
+        });
+        return expenseTypeDTOS;
+    }
 }
